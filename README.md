@@ -1,20 +1,37 @@
 # MUTEX.md
 
-The proposed MUTEX.md standard for coordination of autonomous coding agents through a shared text file.
+A proposed standard for coordinating autonomous coding agents through one shared Markdown file: who is working, what is locked, what was asked and what happened.
 
-The specification lives in **[mutex-md-spec.md](mutex-md-spec.md)**. Edit that file to update the standard.
+It was born at a hackathon where 17 agents shared one workspace for 46 hours. It is a young text, written from one weekend of experience, and it gets better with every workspace that tries it.
 
-- Formatted specification: https://mutex.md/
-- Original Markdown: https://mutex.md/mutex-md-spec.md
-- Discussion and proposals: https://github.com/xd-ventures/mutex-md/issues
+- Read it: https://mutex.md/
+- Raw Markdown: https://mutex.md/mutex-md-spec.md
+- Source: [mutex-md-spec.md](mutex-md-spec.md), the only file you need to edit
 
-## Publishing
+## Your pull request is welcome
 
-Pull requests run the **Build specification** check. Merge a change into `main` to build and deploy the static website automatically through GitHub Actions and GitHub Pages. The Markdown is copied unchanged alongside the generated HTML. No deployment secrets are required.
+If you have run more than one agent in the same place, you know something this spec does not yet know. Send it in. Small pull requests are perfectly fine: a single sentence, one rule or one example.
 
-GitHub Pages must use **GitHub Actions** as its publishing source. Its custom domain is `mutex.md`.
+Especially useful:
 
-## Local preview
+- **Field reports.** How many agents, which tools, what collided, and what the file looked like afterwards. Verbatim quotes from your agents beat summaries.
+- **Counter-examples.** A rule that failed you, and what happened instead.
+- **Rules that worked.** A convention your agents invented or you imposed, and why it held up.
+- **Corrections.** Unclear wording, contradictions, typos.
+
+Not sure whether something fits? Open a pull request anyway, or start with an [issue](https://github.com/xd-ventures/mutex-md/issues).
+
+## How to contribute
+
+1. Fork the repository and edit `mutex-md-spec.md`. Editing it directly on GitHub works too.
+2. Keep one change per pull request. In the description, say which section it touches and what you observed.
+3. Open the pull request. A check builds the site automatically, so you will see whether the Markdown renders.
+
+Version numbers move when a MUST changes. Everything else is a patch.
+
+Disagreements are settled in writing, in the pull request, the way the spec itself suggests.
+
+## Preview locally (optional)
 
 ```sh
 python3 -m venv .venv
@@ -25,29 +42,13 @@ python3 -m venv .venv
 
 Open http://localhost:8000/. Generated files in `_site/` are not committed.
 
-## Domain setup
+## Repository layout
 
-The registration stays at [register.domains](https://register.domains/). Cloudflare hosts DNS; GitHub Pages hosts the static files.
+| Path | What it is |
+| --- | --- |
+| `mutex-md-spec.md` | The specification. |
+| `scripts/build.py` | Renders the spec to HTML. |
+| `site/` | Page template and stylesheet. |
+| `HOSTING.md` | Maintainer notes on deployment and DNS. |
 
-1. In the xd.ventures Cloudflare account, add `mutex.md` on the Free plan. Cloudflare assigns two nameservers to this specific zone.
-2. At register.domains, open `mutex.md` and replace its nameservers with **both exact nameservers assigned by Cloudflare**. Nameservers from another Cloudflare zone must not be reused. Wait until the Cloudflare zone is active.
-3. Configure these Cloudflare DNS records:
-
-   | Type | Name | Content |
-   | --- | --- | --- |
-   | A | `@` | `185.199.108.153` |
-   | A | `@` | `185.199.109.153` |
-   | A | `@` | `185.199.110.153` |
-   | A | `@` | `185.199.111.153` |
-   | AAAA | `@` | `2606:50c0:8000::153` |
-   | AAAA | `@` | `2606:50c0:8001::153` |
-   | AAAA | `@` | `2606:50c0:8002::153` |
-   | AAAA | `@` | `2606:50c0:8003::153` |
-   | CNAME | `www` | `xd-ventures.github.io` |
-
-   Initially use **DNS only** so GitHub can verify the domain and issue the origin HTTPS certificate. Use TTL Auto. No wildcard record is needed. The `www` CNAME already resolves to IPv4 and IPv6 addresses.
-4. In [GitHub Pages settings](https://github.com/xd-ventures/mutex-md/settings/pages), confirm the custom domain is `mutex.md`. When the certificate is available, enable **Enforce HTTPS**.
-5. Enable Cloudflare proxy on the above records and set Cloudflare SSL/TLS mode to **Full (strict)**. Enable **Always Use HTTPS**. The `www` hostname redirects to `mutex.md` through GitHub Pages.
-6. Verify https://mutex.md/ and https://mutex.md/mutex-md-spec.md over IPv4 and IPv6 (`curl -4` and `curl -6`).
-
-Official references: [GitHub Pages custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site), [Cloudflare nameserver setup](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/).
+Merges to `main` are published to https://mutex.md automatically.
