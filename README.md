@@ -39,11 +39,15 @@ The registration stays at [register.domains](https://register.domains/). Cloudfl
    | A | `@` | `185.199.109.153` |
    | A | `@` | `185.199.110.153` |
    | A | `@` | `185.199.111.153` |
+   | AAAA | `@` | `2606:50c0:8000::153` |
+   | AAAA | `@` | `2606:50c0:8001::153` |
+   | AAAA | `@` | `2606:50c0:8002::153` |
+   | AAAA | `@` | `2606:50c0:8003::153` |
    | CNAME | `www` | `xd-ventures.github.io` |
 
-   Initially use **DNS only** so GitHub can verify the domain and issue the origin HTTPS certificate. Use TTL Auto. No wildcard record is needed.
+   Initially use **DNS only** so GitHub can verify the domain and issue the origin HTTPS certificate. Use TTL Auto. No wildcard record is needed. The `www` CNAME already resolves to IPv4 and IPv6 addresses.
 4. In [GitHub Pages settings](https://github.com/xd-ventures/mutex-md/settings/pages), confirm the custom domain is `mutex.md`. When the certificate is available, enable **Enforce HTTPS**.
 5. Enable Cloudflare proxy on the above records and set Cloudflare SSL/TLS mode to **Full (strict)**. Enable **Always Use HTTPS**. The `www` hostname redirects to `mutex.md` through GitHub Pages.
-6. Verify https://mutex.md/ and https://mutex.md/mutex-md-spec.md.
+6. Verify https://mutex.md/ and https://mutex.md/mutex-md-spec.md over IPv4 and IPv6 (`curl -4` and `curl -6`).
 
 Official references: [GitHub Pages custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site), [Cloudflare nameserver setup](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/).
