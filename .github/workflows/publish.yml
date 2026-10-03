@@ -24,7 +24,8 @@ jobs:
           python-version: '3.13'
           cache: pip
       - name: Install pinned Markdown renderer
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements.txt
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements.txt
       - name: Build HTML and publish original Markdown
         run: python scripts/build.py
       - name: Check raw specification matches the source
